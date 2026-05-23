@@ -1,4 +1,3 @@
-# NewsLens AI
 ### News Classification & Summarization Pipeline
 
 NewsLens AI is an end-to-end NLP pipeline that reads a raw news article and instantly tells you what topic it belongs to and gives you a clean short summary of it. Built with a combination of classical machine learning and modern transformer models.
