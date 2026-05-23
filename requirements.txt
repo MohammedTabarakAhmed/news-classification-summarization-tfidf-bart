@@ -1,0 +1,12 @@
+spacy
+scikit-learn
+numpy
+transformers
+torch
+pandas
+flask
+joblib
+matplotlib
+seaborn
+tqdm
+gensim
