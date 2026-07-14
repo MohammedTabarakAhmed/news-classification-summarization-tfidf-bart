@@ -1,110 +1,59 @@
-### News Classification & Summarization Pipeline
+# News Classification & Summarization (TF-IDF + BART)
 
-NewsLens AI is an end-to-end NLP pipeline that reads a raw news article and instantly tells you what topic it belongs to and gives you a clean short summary of it. Built with a combination of classical machine learning and modern transformer models.
+TL;DR
+- A compact, notebook-driven project that explores news article classification using TF-IDF and performs abstractive summarization using a BART model. Everything is provided as Jupyter notebooks so you can inspect, run, and modify each step end-to-end.
 
----
+Why this repo
+- Demonstrates a practical pipeline for text classification (feature extraction with TF-IDF, classical ML classifiers) and neural summarization (pretrained BART from Hugging Face).
+- Ideal for learning how to combine traditional NLP features with transformer-based summarizers.
+- Not a packaged library — this is experimental / educational, implemented as notebooks.
 
-## What it does
+Contents (high level)
+- All work is in Jupyter notebooks (open the repository to view .ipynb files):
+  - Notebook(s) that cover dataset loading, EDA, preprocessing, TF-IDF vectorization, classification experiments.
+  - Notebook(s) that prepare inputs and run BART summarization (using Hugging Face transformers).
+- Useful files:
+  - Repository: https://github.com/MohammedTabarakAhmed/news-classification-summarization-tfidf-bart
 
-You give it a news article. It gives you back:
-- The **category** — Politics, Sports, Technology, or Wellness
-- A **confidence score** — how sure the model is
-- A **summary** — 2 to 3 clean sentences describing the article
+Quick start — run the notebooks locally
+1. Clone
+   git clone https://github.com/MohammedTabarakAhmed/news-classification-summarization-tfidf-bart.git
+   cd news-classification-summarization-tfidf-bart
 
----
+2. Create a Python environment
+   python -m venv .venv
+   source .venv/bin/activate   # macOS / Linux
+   .venv\Scripts\activate      # Windows
 
-## How it works
+3. Install dependencies
+   - If a requirements.txt exists:
+     pip install -r requirements.txt
+   - Otherwise install the common packages used in these notebooks:
+     pip install jupyterlab pandas numpy scikit-learn matplotlib seaborn nltk transformers torch sentencepiece datasets rouge-score flask
 
-The pipeline has two separate parts working together:
+4. Run Jupyter
+   jupyter lab
+   Open the notebooks in the repo and run cells in order (EDA → preprocessing → experiments → summarization).
 
-**Classification** takes the article text, cleans it through a preprocessing pipeline, converts it into numerical features using TF-IDF, and feeds it into a Logistic Regression model that predicts the category.
+Repro tip — run notebooks end-to-end from the command line
+- To execute a notebook and save outputs:
+  jupyter nbconvert --to notebook --execute "Notebook_Name.ipynb" --inplace
 
-**Summarization** takes the raw article and passes it through Facebook's BART transformer model which was pretrained on CNN news articles, making it perfect for this exact use case.
+What you'll find in the notebooks
+- EDA: dataset structure, class balance, example articles.
+- Preprocessing: tokenization, stopwords, light cleaning, TF-IDF vectorization pipeline.
+- Classification experiments: baseline models (Logistic Regression, SVM), cross-validation, metrics (precision/recall/F1), confusion matrix.
+- Summarization: loading a pretrained BART model, tokenization, generating summaries (with adjustable decoding parameters), evaluation notes (ROUGE).
+- Code samples to convert notebook cells to functions for reuse.
 
----
+Notes & cautions
+- Models and heavy transformer checkpoints should be downloaded at runtime — ensure sufficient disk space and a GPU if you plan to fine-tune.
+- Do not commit large model files or dataset dumps to git. Use cloud storage (S3 or similar) if you want to persist artifacts.
+- Results depend on the dataset used and hyperparameters; notebooks include places to plug your own data.
 
-## Tech Stack
+If you want this README committed to the repo
+- I can create/update README.md in the repository for you if you confirm the target branch (or let it default to the repo’s default branch).
 
-| Component | Technology |
-|---|---|
-| Language | Python 3.11 |
-| Environment | Conda virtual environment |
-| Dataset | HuffPost News Category Dataset (58,624 articles) |
-| Preprocessing | spaCy + Gensim |
-| Vectorization | TF-IDF (scikit-learn) |
-| Classifier | Logistic Regression (scikit-learn) |
-| Summarizer | facebook/bart-large-cnn (Hugging Face) |
-
----
-
-## Preprocessing Pipeline
-
-Every article goes through these steps before hitting the model:
-
-1. **Whitespace normalization** — clean up messy spacing and newlines
-2. **Tokenization** — split text into individual words
-3. **Stop word removal** — drop words like "the", "is", "by" that carry no meaning
-4. **Lemmatization** — reduce words to root form ("running" → "run", "policies" → "policy")
-5. **Short token filter** — remove any token under 3 characters
-
----
-
-## Model Performance
-
-Tested on 11,725 held-out articles with an overall accuracy of **95%**.
-
-| Category | Precision | Recall | F1 Score |
-|---|---|---|---|
-| POLITICS | 0.98 | 0.95 | 0.97 |
-| WELLNESS | 0.93 | 0.97 | 0.95 |
-| SPORTS | 0.85 | 0.91 | 0.88 |
-
----
-
-## Example Output
-
-```
-Input:     "President Biden announced a $5 billion AI investment plan targeting
-            universities and private companies across the United States."
-
-Category:  POLITICS
-Confidence: 0.924
-Summary:   President Biden unveiled a major artificial intelligence funding
-           initiative worth $5 billion. The plan targets universities and
-           private sector companies to accelerate AI development nationwide.
-```
-
----
-
-## How to Run
-
-```bash
-# 1. Create and activate environment
-conda create -p .\venv python=3.11 -y
-conda activate .\venv
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Download spaCy model
-python -m spacy download en_core_web_sm
-
-# 4. Open the notebook in VS Code and select the venv kernel
-```
-
----
-
-## Project Structure
-
-```
-NewsLens AI/
-│
-├── newslens.ipynb          # main notebook
-├── requirements.txt        # all dependencies
-├── News_Category_Dataset_v3.json  # dataset
-└── README.md               # this file
-```
-
----
-
-*Built with Python 3.11 · spaCy · scikit-learn · Hugging Face Transformers*
+License & contact
+- If you want an explicit license, add a LICENSE file (MIT is common).
+- Questions or edits: MohammedTabarakAhmed (GitHub) — open an issue or PR on the repository.
